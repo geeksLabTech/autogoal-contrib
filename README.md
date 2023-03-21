@@ -1,1 +1,1 @@
-# autogoal-contrib
+# AutoGOAL Contrib
