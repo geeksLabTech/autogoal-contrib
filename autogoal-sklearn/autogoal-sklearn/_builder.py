@@ -21,7 +21,7 @@ from numpy import inf, nan
 from sklearn.datasets import make_classification
 
 from autogoal import kb
-from autogoal.contrib.sklearn._utils import get_input_output, is_algorithm
+from ._utils import get_input_output, is_algorithm
 from autogoal.grammar import (
     BooleanValue,
     CategoricalValue,

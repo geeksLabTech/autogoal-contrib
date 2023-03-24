@@ -2,7 +2,7 @@ from sklearn.feature_extraction.text import CountVectorizer as _CountVectorizer
 from sklearn.feature_extraction import DictVectorizer
 from sklearn_crfsuite import CRF
 
-from autogoal.contrib.sklearn._builder import SklearnTransformer, SklearnEstimator
+from ._builder import SklearnTransformer, SklearnEstimator
 from autogoal.kb import *
 from autogoal.grammar import (
     BooleanValue,

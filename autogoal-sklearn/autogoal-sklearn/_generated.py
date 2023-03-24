@@ -9,7 +9,7 @@ from autogoal.grammar import (
     CategoricalValue,
     BooleanValue,
 )
-from autogoal.contrib.sklearn._builder import SklearnEstimator, SklearnTransformer
+from ._builder import SklearnEstimator, SklearnTransformer
 from autogoal.kb import *
 
 from sklearn.cluster._affinity_propagation import (
