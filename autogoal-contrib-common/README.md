@@ -1,1 +1,0 @@
-# AutoGOAL Contrib Common
