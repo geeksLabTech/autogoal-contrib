@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from autogoal.kb import AlgorithmBase
-from autogoal.utils import find_packages, resolve_contrib
+from autogoal.utils import find_packages
 from os.path import abspath, dirname, join
 from inspect import getsourcefile
 import enum
@@ -32,8 +32,8 @@ def find_classes(include=None, exclude=None, modules=None, input=None, output=No
     if modules is None:
         modules = []
 
-        for package in get_installed_contribs(exclude="remote"):
-            modules.append(__import__(package.key))
+        for module in get_installed_contribs(exclude=["remote", "contrib"]):
+            modules.append(module)
 
     for module in modules:
         for _, cls in inspect.getmembers(module, inspect.isclass):
@@ -49,7 +49,7 @@ def find_classes(include=None, exclude=None, modules=None, input=None, output=No
             if exclude is not None and re.match(exclude, repr(cls)):
                 continue
 
-            if not issubclass(cls, AlgorithmBase):
+            if not issubclass(cls, AlgorithmBase) or cls is AlgorithmBase:
                 continue
 
             sig = inspect.signature(cls.run)
@@ -73,14 +73,9 @@ def find_remote_classes(
     output=None,
     ignore_cache=False,
 ):
-    autogoal_remote = resolve_contrib("autogoal-remote")
-
+    from autogoal_remote import get_algorithms, store_connection, get_stored_aliases
     import itertools
     import re
-
-    get_algorithms = autogoal_remote.get_algorithms
-    store_connection = autogoal_remote.store_connection
-    get_stored_aliases = autogoal_remote.get_stored_aliases
 
     if include:
         include = f".*({include}).*"
@@ -166,19 +161,19 @@ def get_registered_contribs():
     return result
 
 
-def get_installed_contribs(exclude: str = None):
+def get_installed_contribs(exclude: List[str] = None):
     """
     find all installed contrib modules.
     """
 
-    packages_identifier = (
-        "autogoal-" if exclude is None else rf"autogoal-(?!.*\b{exclude}\b).*"
-    )
+    exclude_pattern = "" if exclude is None else rf"(?!{'|'.join(exclude)})"
+    packages_identifier = rf"autogoal-{exclude_pattern}.*"
     modules = []
     for pkg in find_packages(packages_identifier):
         try:
-            __import__(pkg.key)
-            modules.append(pkg)
+            key = pkg.key.replace("-", "_")
+            module = __import__(key)
+            modules.append(module)
         except ImportError as e:
             print(
                 f"Error importing {pkg.project_name} {pkg.version}. Use pip install {pkg.project_name} to ensure all dependencies are installed correctly."
@@ -237,4 +232,6 @@ __all__ = [
 ]
 
 if __name__ == "__main__":
-    print(find_remote_classes([("172.18.0.3", 8000)]))
+    # print(find_classes())
+    # print(get_installed_contribs(exclude = "remote"))
+    print(find_remote_classes(["remote-sklearn"]))
