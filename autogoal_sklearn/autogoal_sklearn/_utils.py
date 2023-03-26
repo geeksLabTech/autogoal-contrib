@@ -6,7 +6,7 @@ import numpy as np
 import scipy.sparse as sp
 from typing import List, Tuple
 
-from autogoal.contrib._utils import (
+from autogoal_contrib._utils import (
     is_categorical,
     is_continuous,
     is_matrix_continuous_dense,
