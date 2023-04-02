@@ -12,7 +12,7 @@ from tensorflow.keras.preprocessing.image import (
     ImageDataGenerator as _ImageDataGenerator,
 )
 
-from autogoal.contrib.keras._grammars import build_grammar, generate_grammar, Modules
+from autogoal_keras._grammars import build_grammar, generate_grammar, Modules
 from autogoal.grammar import (
     Graph,
     GraphGrammar,
@@ -338,8 +338,8 @@ class KerasSequenceClassifier(KerasClassifier):
 # These imports are taken from <https://github.com/tensorflow/addons/pull/377>
 # since the CRF layer has not yet landed in tensorflow
 # TODO: Make sure to replace this when tensorflow merges this commit
-from autogoal.contrib.keras._crf import CRF
-from autogoal.contrib.keras._crf import crf_loss
+from autogoal_keras._crf import CRF
+from autogoal_keras._crf import crf_loss
 
 
 class KerasSequenceTagger(KerasNeuralNetwork):

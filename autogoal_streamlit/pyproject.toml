@@ -12,6 +12,8 @@ packages = [{include = "autogoal_streamlit"}]
 
 [tool.poetry.dependencies]
 python = "3.9.16"
+streamlit = "^1.20.0"
+nx-altair = "^0.1.6"
 
 [build-system]
 requires = ["poetry-core"]

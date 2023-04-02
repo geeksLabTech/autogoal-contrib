@@ -194,7 +194,7 @@ def build_nltk_wrappers():
             ## DO NOT MODIFY THIS FILE MANUALLY
 
             from autogoal.grammar import Continuous, Discrete, Categorical, Boolean
-            from autogoal.contrib.nltk._builder import NltkStemmer, NltkTokenizer, NltkLemmatizer, NltkTagger, NltkTrainedTagger
+            from autogoal_nltk._builder import NltkStemmer, NltkTokenizer, NltkLemmatizer, NltkTagger, NltkTrainedTagger
             from autogoal.kb import *
             from autogoal.utils import nice_repr
             from numpy import inf, nan

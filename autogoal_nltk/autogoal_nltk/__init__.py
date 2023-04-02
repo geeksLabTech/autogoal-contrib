@@ -1,7 +1,7 @@
 try:
     import nltk
 except:
-    print("(!) Code in `autogoal.contrib.nltk` requires `nltk`.")
+    print("(!) Code in `autogoal_nltk` requires `nltk`.")
     print("(!) You can install it with `pip install autogoal[nltk]`.")
     raise
 
@@ -35,7 +35,7 @@ def download():
 
 
 def status():
-    from autogoal.contrib import ContribStatus
+    from autogoal_contrib import ContribStatus
 
     try:
         from nltk.corpus import wordnet

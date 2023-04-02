@@ -8,16 +8,16 @@ try:
 
     # assert keras.__version__ == "2.3.1"
 except:
-    print("(!) Code in `autogoal.contrib.keras` requires `keras==2.3.1`.")
+    print("(!) Code in `autogoal_keras` requires `keras`.")
     print("(!) You can install it with `pip install autogoal[keras]`.")
     raise
 
 
-from ._base import (
+from autogoal_keras._base import (
     KerasClassifier,
     KerasSequenceClassifier,
     KerasSequenceTagger,
     KerasImageClassifier,
     KerasImagePreprocessor,
 )
-from ._grammars import build_grammar
+from autogoal_keras._grammars import build_grammar

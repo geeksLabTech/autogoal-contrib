@@ -1,4 +1,4 @@
-from autogoal.contrib.keras._generated import *
+from autogoal_keras._generated import *
 from autogoal.grammar import GraphGrammar, Path, Block, CfgInitializer, Epsilon
 
 

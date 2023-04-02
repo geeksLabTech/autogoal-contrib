@@ -10,11 +10,11 @@ Most of the classes and functions inside this module deal with the automatic
 generation of wrappers and thus are considered private API.
 
 The main public functionality exposed by this module is the function
-[find_classes](/api/autogoal.contrib.sklearn/#find_classes), which allows to
+[find_classes](/api/autogoal_sklearn/#find_classes), which allows to
 enumerate the wrappers implemented in this module applying some filters.
 
 !!! note
-    You can manually import any wrapper class directly from `autogoal.contrib.sklearn._generated`
+    You can manually import any wrapper class directly from `autogoal_sklearn._generated`
     buy beware that namespace changes wildly from version to version and classes in it
     might disappear or change their signature anytime.
 """
@@ -25,7 +25,7 @@ try:
     major, minor, *rest = sklearn.__version__.split(".")
     assert (int(major) == 0 and int(minor) >= 22) or int(major) > 0
 except:
-    print("(!) Code in `autogoal.contrib.sklearn` requires `sklearn=^0.22`.")
+    print("(!) Code in `autogoal_sklearn` requires `sklearn=^0.22`.")
     print("(!) You can install it with `pip install autogoal[sklearn]`.")
     raise ImportError()
 

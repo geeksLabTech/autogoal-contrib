@@ -5,7 +5,7 @@ import numpy as np
 import scipy.sparse as sp
 
 from autogoal import kb
-from autogoal.contrib._utils import (
+from autogoal_contrib._utils import (
     is_matrix_continuous_dense,
     is_matrix_continuous_sparse,
     is_categorical,

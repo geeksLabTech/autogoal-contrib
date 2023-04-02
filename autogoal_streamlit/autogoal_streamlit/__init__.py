@@ -2,7 +2,7 @@ try:
     import streamlit as st
 except ImportError:
     print(
-        "(!) The code inside `autogoal.contrib.streamlit` requires `streamlit>=0.55`."
+        "(!) The code inside `autogoal_streamlit` requires `streamlit`."
     )
     print("(!) Fix it by running `pip install autogoal[streamlit]`.")
     raise

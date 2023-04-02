@@ -1,7 +1,11 @@
 import os
 from pathlib import Path
 
-DATA_PATH = Path.home() / ".autogoal" / "contrib" / "transformers"
+from inspect import getsourcefile
+from os.path import abspath, dirname, join
+
+# DATA_PATH should be the main directory of autogoal_transformers contrib
+DATA_PATH = dirname(abspath(getsourcefile(lambda: 0)))
 
 # Setting up download location
 os.environ["TRANSFORMERS_CACHE"] = str(DATA_PATH)
@@ -10,11 +14,9 @@ os.environ["TRANSFORMERS_CACHE"] = str(DATA_PATH)
 try:
     import torch
     import transformers
-
-    # assert sklearn.__version__ == "0.22"
 except:
     print(
-        "(!) Code in `autogoal.contrib.transformers` requires `pytorch==0.1.4` and `transformers==2.3.0`."
+        "(!) Code in `autogoal_transformers` requires `pytorch` and `transformers`."
     )
     print("(!) You can install it with `pip install autogoal[transformers]`.")
     raise
@@ -29,7 +31,7 @@ def download():
 
 
 def status():
-    from autogoal.contrib import ContribStatus
+    from autogoal_contrib import ContribStatus
 
     try:
         BertEmbedding.check_files()

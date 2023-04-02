@@ -205,7 +205,7 @@ class Demo:
             "Timeout per pipeline (seconds)", 1, 1000, 5
         )
 
-        from autogoal.contrib.streamlit import StreamlitLogger
+        from autogoal_streamlit import StreamlitLogger
 
         if dataset in override_types:
             input_type, output_type = override_types[dataset]
@@ -289,7 +289,7 @@ class Demo:
 
         st.image("/code/docs/guide/datatypes.png", use_column_width=True)
 
-        from autogoal.contrib import find_classes
+        from autogoal_contrib import find_classes
 
         all_classes = {k.__name__: k for k in find_classes()}
 
@@ -378,7 +378,7 @@ class Demo:
             f"""
             from autogoal.kb import *
             from autogoal.kb import build_pipelines
-            from autogoal.contrib import find_classes
+            from autogoal_contrib import find_classes
 
             # explicitly build the graph of pipelines
             space = build_pipelines(
