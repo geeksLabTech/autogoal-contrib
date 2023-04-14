@@ -6,11 +6,12 @@ import pandas as pd
 import altair as alt
 import nx_altair as nxa
 import inspect
+import zipfile
 
-from autogoal.kb import build_pipeline_graph
+from autogoal.kb import *
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_data
 def eval_code(code, *variables):
     locals_dict = {}
     exec(code, globals(), locals_dict)
@@ -142,8 +143,15 @@ class Demo:
         }
 
         override_types = {
-            "german_credit": ("MatrixContinuousDense()", "CategoricalVector()"),
-            "dorothea": ("MatrixContinuousSparse()", "CategoricalVector()"),
+            "cars": (
+                "(MatrixContinuousSparse, Supervised[VectorCategorical])",
+                "VectorCategorical",
+            ),
+            "german_credit": (),
+            "dorothea": (
+                "(MatrixContinuousSparse, Supervised[VectorCategorical])",
+                "VectorCategorical",
+            ),
             "gisette": ("MatrixContinuousSparse()", "CategoricalVector()"),
             "haha": ("List(Sentence())", "CategoricalVector()"),
             "meddocan": ("List(List(Word()))", "List(List(Postag()))"),
@@ -232,10 +240,8 @@ class Demo:
             automl = AutoML(
                 errors="ignore",  # ignore exceptions (e.g., timeouts)
                 search_iterations={iterations}, # total iterations
-                search_kwargs=dict(
-                    search_timeout={global_timeout}, # max time in total (approximate)
-                    evaluation_timeout={pipeline_timeout}, # max time per pipeline (approximate)
-                ), {types_code}
+                search_timeout={global_timeout}, # max time in total (approximate)
+                evaluation_timeout={pipeline_timeout}, # max time per pipeline (approximate), {types_code}
             )
             """
         )
@@ -245,16 +251,53 @@ class Demo:
 
         st.write(
             """
-            Click run to call the `fit` method. Keep in mind that many of these pipelines can be 
-            quite computationally heavy and both the hyperparameter configuration as well as the
-            infrastructure where this demo is running might not allow for the best pipelines to execute.
+            To initiate the fit method, simply click on the "run" button. It's important to note that some of 
+            the pipelines can be computationally intensive, and the hyperparameter settings and infrastructure 
+            of the demo may not be optimal for running the best pipelines.
             """
         )
 
         st.code("automl.fit(X, y)", language="Python")
 
         if st.button("Run it!"):
+            st.session_state.clear()
+
             automl.fit(X, y, logger=StreamlitLogger())
+            path_to_zip = automl.export_portable(generate_zip=True)
+
+            st.session_state.automl = automl
+            st.session_state.path_to_zip = path_to_zip
+
+        if "path_to_zip" in st.session_state:
+            st.write(
+                """
+                After the AutoML process is complete and a pipeline is successfully identified, AutoGOAL has 
+                the ability to save it and create a new docker image. This image can then be executed and utilized 
+                as a web service in any production environment. Additionally, custom clients can communicate with 
+                the service through a RESTapi.
+                """
+            )
+
+            fp = open(st.session_state.path_to_zip, "rb")
+            if st.download_button(
+                label="Export it!",
+                data=fp,
+                file_name="production_assets.zip",
+                mime="application/zip",
+            ):
+                st.session_state.downloaded = True
+
+        if "downloaded" in st.session_state:
+            st.write(
+                """
+                    Inside this zip file, you will find a custom dockerfile, a makefile, and a storage directory. 
+                    To build the new image, use the following command:
+
+                        make build
+
+                    This will result in the creation of a new docker image with the name `autogoal/autogoal:production`.
+                    """
+            )
 
         st.write(
             """
@@ -464,5 +507,6 @@ class Demo:
         self.main_sections[main_section]()
 
 
-demo = Demo()
-demo.run()
+if __name__ == "__main__":
+    demo = Demo()
+    demo.run()

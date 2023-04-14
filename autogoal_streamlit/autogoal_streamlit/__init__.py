@@ -9,7 +9,9 @@ except ImportError:
 
 
 from autogoal.search import Logger
-
+from autogoal_streamlit.cli import typer_app
+import pandas as pd
+import altair as alt
 
 class StreamlitLogger(Logger):
     def __init__(self):
@@ -19,9 +21,24 @@ class StreamlitLogger(Logger):
         self.progress = st.progress(0)
         self.error_log = st.empty()
         self.best_fn = 0
-        self.chart = st.line_chart([dict(current=0.0, best=0.0)])
         self.current_pipeline = st.code("")
         self.best_pipeline = None
+
+        self.data = pd.DataFrame({
+            'iteration': [0, 0],
+            'fitness': [0, 0],
+            'category': ['current', 'best']
+        })
+
+        chart = alt.Chart(self.data).mark_line().encode(
+            x='iteration',
+            y='fitness',
+            color='category'
+        )
+
+        # Display the updated chart in the Streamlit app
+        self.chart = st.altair_chart(chart, use_container_width=True)
+
 
     def begin(self, evaluations, pop_size):
         self.status.info(f"Starting evaluation for {evaluations} iterations.")
@@ -43,7 +60,23 @@ class StreamlitLogger(Logger):
         self.current_pipeline.code(repr(solution))
 
     def eval_solution(self, solution, fitness):
-        self.chart.add_rows([dict(current=fitness, best=self.best_fn)])
+        iteration = len(self.data) - 1
+
+        new_data = pd.DataFrame({
+            'iteration': [iteration, iteration],
+            'fitness': [float(max(fitness, 0)), float(max(self.best_fn, 0))],
+            'category': ['current', 'best'],
+            })
+        
+        self.data = pd.concat([self.data, new_data], ignore_index=True)
+        
+        chart = alt.Chart(self.data).mark_line().encode(
+            x='iteration',
+            y='fitness',
+            color='category'
+        )
+        
+        self.chart.altair_chart(chart, use_container_width=True)
 
     def end(self, best, best_fn):
         self.status.success(
