@@ -79,6 +79,7 @@ class SklearnLikeWrapper(AlgorithmBase):
     def _eval(self, *args):
         pass
 
+
 class SklearnLikeTransformer(SklearnLikeWrapper):
     def _train(self, X, y=None):
         return self.fit_transform(X)
@@ -93,7 +94,6 @@ class SklearnLikeTransformer(SklearnLikeWrapper):
     @abc.abstractmethod
     def transform(self, X, y=None):
         pass
-
 
 
 class NltkTokenizer(AlgorithmBase):

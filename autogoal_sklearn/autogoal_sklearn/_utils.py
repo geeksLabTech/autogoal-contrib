@@ -12,7 +12,7 @@ from autogoal_contrib._utils import (
     is_matrix_continuous_dense,
     is_matrix_continuous_sparse,
     is_string_list,
-    is_discrete
+    is_discrete,
 )
 
 

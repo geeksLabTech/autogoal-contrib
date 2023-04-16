@@ -110,6 +110,7 @@ class SklearnTransformer(SklearnWrapper):
     def transform(self, X, y=None):
         pass
 
+
 TYPE_ALIASES = {
     Tensor[1, None, None]: "Vector",
     Tensor[1, Continuous, None]: "VectorContinuous",
@@ -122,7 +123,7 @@ TYPE_ALIASES = {
     Tensor[2, Categorical, Dense]: "MatrixCategorical",
     Tensor[2, Discrete, Dense]: "MatrixDiscrete",
     Tensor[3, Continuous, Dense]: "Tensor3",
-    Tensor[4, Continuous, Dense]: "Tensor4"
+    Tensor[4, Continuous, Dense]: "Tensor4",
 }
 
 
@@ -217,7 +218,7 @@ def _write_class(cls, fp):
     s = " " * 4
     args_str = f",\n{s * 4}".join(f"{key}: {value}" for key, value in args.items())
     init_str = f",\n{s * 5}".join(f"{key}={key}" for key in args)
-    
+
     output_str = TYPE_ALIASES.get(outputs) or repr(outputs)
 
     base_class = (
@@ -227,10 +228,10 @@ def _write_class(cls, fp):
     input_str = "input: " + (TYPE_ALIASES.get(inputs) or repr(inputs))
     run_input_str = "input"
     if type(inputs) == tuple:
-        if (len(inputs) > 2):
+        if len(inputs) > 2:
             raise Exception(
-                    "Unsuported input string representation for algorithms with more than 2 input elements."
-                )
+                "Unsuported input string representation for algorithms with more than 2 input elements."
+            )
         x, y = inputs
         input_str = f"X: {TYPE_ALIASES.get(x) or repr(x)}, y: Supervised[{TYPE_ALIASES.get(y) or repr(y)}]"
         run_input_str = "X, y"

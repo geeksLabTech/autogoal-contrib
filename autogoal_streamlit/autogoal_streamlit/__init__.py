@@ -1,9 +1,7 @@
 try:
     import streamlit as st
 except ImportError:
-    print(
-        "(!) The code inside `autogoal_streamlit` requires `streamlit`."
-    )
+    print("(!) The code inside `autogoal_streamlit` requires `streamlit`.")
     print("(!) Fix it by running `pip install autogoal[streamlit]`.")
     raise
 
@@ -12,6 +10,7 @@ from autogoal.search import Logger
 from autogoal_streamlit.cli import typer_app
 import pandas as pd
 import altair as alt
+
 
 class StreamlitLogger(Logger):
     def __init__(self):
@@ -24,21 +23,18 @@ class StreamlitLogger(Logger):
         self.current_pipeline = st.code("")
         self.best_pipeline = None
 
-        self.data = pd.DataFrame({
-            'iteration': [0, 0],
-            'fitness': [0, 0],
-            'category': ['current', 'best']
-        })
+        self.data = pd.DataFrame(
+            {"iteration": [0, 0], "fitness": [0, 0], "category": ["current", "best"]}
+        )
 
-        chart = alt.Chart(self.data).mark_line().encode(
-            x='iteration',
-            y='fitness',
-            color='category'
+        chart = (
+            alt.Chart(self.data)
+            .mark_line()
+            .encode(x="iteration", y="fitness", color="category")
         )
 
         # Display the updated chart in the Streamlit app
         self.chart = st.altair_chart(chart, use_container_width=True)
-
 
     def begin(self, evaluations, pop_size):
         self.status.info(f"Starting evaluation for {evaluations} iterations.")
@@ -62,20 +58,22 @@ class StreamlitLogger(Logger):
     def eval_solution(self, solution, fitness):
         iteration = len(self.data) - 1
 
-        new_data = pd.DataFrame({
-            'iteration': [iteration, iteration],
-            'fitness': [float(max(fitness, 0)), float(max(self.best_fn, 0))],
-            'category': ['current', 'best'],
-            })
-        
-        self.data = pd.concat([self.data, new_data], ignore_index=True)
-        
-        chart = alt.Chart(self.data).mark_line().encode(
-            x='iteration',
-            y='fitness',
-            color='category'
+        new_data = pd.DataFrame(
+            {
+                "iteration": [iteration, iteration],
+                "fitness": [float(max(fitness, 0)), float(max(self.best_fn, 0))],
+                "category": ["current", "best"],
+            }
         )
-        
+
+        self.data = pd.concat([self.data, new_data], ignore_index=True)
+
+        chart = (
+            alt.Chart(self.data)
+            .mark_line()
+            .encode(x="iteration", y="fitness", color="category")
+        )
+
         self.chart.altair_chart(chart, use_container_width=True)
 
     def end(self, best, best_fn):

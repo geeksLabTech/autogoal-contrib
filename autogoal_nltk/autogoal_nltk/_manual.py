@@ -3,7 +3,12 @@ from gensim.models.doc2vec import Doc2Vec as _Doc2Vec
 
 from numpy import inf, nan
 
-from autogoal_nltk._builder import NltkTokenizer, NltkTagger, SklearnLikeTransformer, SklearnLikeWrapper
+from autogoal_nltk._builder import (
+    NltkTokenizer,
+    NltkTagger,
+    SklearnLikeTransformer,
+    SklearnLikeWrapper,
+)
 from autogoal.grammar import (
     BooleanValue,
     CategoricalValue,

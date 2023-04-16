@@ -15,9 +15,7 @@ try:
     import torch
     import transformers
 except:
-    print(
-        "(!) Code in `autogoal_transformers` requires `pytorch` and `transformers`."
-    )
+    print("(!) Code in `autogoal_transformers` requires `pytorch` and `transformers`.")
     print("(!) You can install it with `pip install autogoal[transformers]`.")
     raise
 
