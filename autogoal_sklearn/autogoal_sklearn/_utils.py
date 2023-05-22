@@ -257,7 +257,7 @@ def is_data_type(X, data_type):
     return DATA_RESOLVERS[data_type](X)
 
 
-IO_TYPE_HANDLER = [is_classifier, is_regressor, is_clusterer, is_transformer]
+IO_TYPE_HANDLER = [is_clusterer, is_transformer, is_classifier, is_regressor]
 
 
 def get_input_output(cls, verbose=False):
