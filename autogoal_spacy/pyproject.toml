@@ -11,7 +11,7 @@ repository = "https://github.com/autogoal/autogoal-contrib"
 packages = [{include = "autogoal_spacy"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.12"
 spacy = "^3.5.1"
 
 [build-system]
